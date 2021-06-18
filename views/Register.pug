@@ -11,6 +11,7 @@ html(lang="en")
         div(class='container')
             include ./index.pug
             h1 Registration form
+            ul(id="errors")
             br
             form(action="/Register" method="post" align="center")
                 label(for="username") username
@@ -20,6 +21,9 @@ html(lang="en")
                 label(for="password") password
                 input(type="password" name="password")
                 br
+                label(for="cpassword") Confirm password
+                input(type="password" name="cpassword")
+                br
                 br
                 label(for="age") user age
                 input(type="text" name="age")
@@ -27,6 +31,10 @@ html(lang="en")
                 br
                 label(for="mobile") user mobile
                 input(type="text" name="mobile")
+                br
+                br
+                label(for="email") user email
+                input(type="text" name="email")
                 br
                 br
                 input(type="submit" name="Register" value="Register")

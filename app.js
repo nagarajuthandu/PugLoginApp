@@ -3,13 +3,19 @@ const bodyparser=require("body-parser")
 const bcrypt=require("bcrypt");
 const user=require('./models/user');
 const mongoose = require('mongoose');
+const expressValidator = require("express-validator");
+const {check, validationResult} = require('express-validator/check')
+
 const app = express();
 const port = process.env.PORT || 80
 mongoose.connect("mongodb://localhost:27017/user",{userNewUrlParser : true});
-app.set('view engine', 'pug')
+app.set('view engine', 'pug');
 
 app.use(bodyparser.json());
-app.use(bodyparser.urlencoded({extended:true}))
+app.use(bodyparser.urlencoded({extended:true}));
+
+
+
 
 //handling get request
 
@@ -23,14 +29,32 @@ app.get('/Login',function(req,res){
     res.render('Login')
     })
 
-app.get('/Register',function(req,res){
-
+app.get('/Register',
+    function(req,res){
+      
     res.render('Register')
     })
 
 //handling post request
 
-app.post('/Register',function(req,res){
+app.post('/Register',
+[
+    check('username').not().isEmpty().isLength({min:5}).withMessage('User name must be 5 characters'),
+    check('password').not().isEmpty().isLength({min:6}).withMessage('Password name must be 6 characters'),
+    check('age').not().isEmpty().isInt().withMessage('age  must be integer'),
+    check('mobile').not().isEmpty().isInt().isLength({min:10}).withMessage('mobile number must be number and 10 characters'),
+    check('cpassword').custom((value,{req}) => (value === req.body.password)).withMessage("Confirm password not match with your password"),
+    check('email').not().isEmpty().isEmail().normalizeEmail().withMessage("Enetr proper email"),
+],
+
+    function(req,res){
+        
+        const errors= validationResult(req);
+        if(!errors.isEmpty())
+        {
+            return res.status(422).jsonp(errors.array());
+        }
+        else{
 
         //console.log(req.body.username)
         const newUser=new user();
@@ -55,8 +79,10 @@ app.post('/Register',function(req,res){
                 console.log(result);
                 res.redirect("Login");
             }
+            
         })
-
+    
+    }
 
     })
 
