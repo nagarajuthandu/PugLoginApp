@@ -134,7 +134,29 @@ app.post('/Register',
         })
     
 
+        app.get('/ajax', function(req, res){
+            res.render('ajax', {title: 'An Ajax Search', name: "Search user!"});
+        });
+        app.post('/ajax', function(req, res){
 
+            user.findOne({username:req.body.name},function(err,docs){
+                if(err)
+                {
+                    console.log(err)
+                
+                }
+                else
+                {
+                    
+                        res.render('ajax', {title: 'An Ajax search', name: "Name "+docs.username+", Age "+docs.age+", Mobile "+docs.mobile });
+                   
+                }
+            });
+              
+        
+
+           
+        });
 
 
 app.listen(port,() => {console.log(`app is listening on http://localhost:${port}`)})

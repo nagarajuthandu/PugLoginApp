@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Login
+        style 
+            include ./my.css
+        script(src="http://code.jquery.com/jquery-3.1.0.min.js")
+        script(src="/magic.js")
+        include ./index.pug
+    body 
+        div(class='container')    
+            form(method="post" id="change" align="center")
+                input(type='text', placeholder='search user', name='name')
+                input(type="submit", value="Search")
+                h1 User Details
+                p !{name}
